@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { saveOnboarding, type OnboardingState } from "@/lib/actions/profile";
 import type { Locale } from "../dictionaries";
 
@@ -47,23 +47,41 @@ export function OnboardingForm({ lang, copy }: { lang: Locale; copy: Copy }) {
     saveOnboarding,
     null,
   );
+  const [skin, setSkin] = useState<string>("");
+  const [hair, setHair] = useState<string>("");
+  const [concerns, setConcerns] = useState<string[]>([]);
+
+  function toggleConcern(v: string) {
+    setConcerns((cs) => (cs.includes(v) ? cs.filter((c) => c !== v) : [...cs, v]));
+  }
+
+  const baseOpt =
+    "flex cursor-pointer items-center gap-2 rounded-xl border p-3 text-sm transition select-none";
+  const optOff = "border-[#1e3a2c]/15 bg-white text-[#1e3a2c]";
+  const optOn = "border-[#1e3a2c] bg-[#1e3a2c] text-[#f0ead6]";
 
   return (
     <form action={formAction} className="flex flex-col gap-7">
       <input type="hidden" name="lang" value={lang} />
+      <input type="hidden" name="skin_type" value={skin} />
+      <input type="hidden" name="hair_type" value={hair} />
+      {concerns.map((c) => (
+        <input key={c} type="hidden" name="concerns" value={c} />
+      ))}
 
       <fieldset>
         <legend className="mb-3 text-sm font-semibold text-[#1e3a2c]">{copy.skin}</legend>
         <div className="grid grid-cols-2 gap-2">
           {SKIN_OPTIONS.map((o) => (
-            <label
+            <button
+              type="button"
               key={o.value}
-              className="group flex cursor-pointer items-center gap-2 rounded-xl border border-[#1e3a2c]/15 bg-white p-3 text-sm transition has-[:checked]:border-[#1e3a2c] has-[:checked]:bg-[#1e3a2c] has-[:checked]:text-[#f0ead6]"
+              onClick={() => setSkin(o.value === skin ? "" : o.value)}
+              className={`${baseOpt} ${skin === o.value ? optOn : optOff}`}
             >
-              <input type="radio" name="skin_type" value={o.value} className="sr-only" />
               <span className="text-lg">{o.emoji}</span>
               <span>{o[lang]}</span>
-            </label>
+            </button>
           ))}
         </div>
       </fieldset>
@@ -72,14 +90,15 @@ export function OnboardingForm({ lang, copy }: { lang: Locale; copy: Copy }) {
         <legend className="mb-3 text-sm font-semibold text-[#1e3a2c]">{copy.hair}</legend>
         <div className="grid grid-cols-2 gap-2">
           {HAIR_OPTIONS.map((o) => (
-            <label
+            <button
+              type="button"
               key={o.value}
-              className="flex cursor-pointer items-center gap-2 rounded-xl border border-[#1e3a2c]/15 bg-white p-3 text-sm transition has-[:checked]:border-[#1e3a2c] has-[:checked]:bg-[#1e3a2c] has-[:checked]:text-[#f0ead6]"
+              onClick={() => setHair(o.value === hair ? "" : o.value)}
+              className={`${baseOpt} ${hair === o.value ? optOn : optOff}`}
             >
-              <input type="radio" name="hair_type" value={o.value} className="sr-only" />
               <span className="text-lg">{o.emoji}</span>
               <span>{o[lang]}</span>
-            </label>
+            </button>
           ))}
         </div>
       </fieldset>
@@ -87,15 +106,23 @@ export function OnboardingForm({ lang, copy }: { lang: Locale; copy: Copy }) {
       <fieldset>
         <legend className="mb-3 text-sm font-semibold text-[#1e3a2c]">{copy.concerns}</legend>
         <div className="flex flex-wrap gap-2">
-          {CONCERN_OPTIONS.map((o) => (
-            <label
-              key={o.value}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full border border-[#1e3a2c]/15 bg-white px-3 py-1.5 text-xs transition has-[:checked]:border-[#1e3a2c] has-[:checked]:bg-[#1e3a2c] has-[:checked]:text-[#f0ead6]"
-            >
-              <input type="checkbox" name="concerns" value={o.value} className="sr-only" />
-              <span>{o[lang]}</span>
-            </label>
-          ))}
+          {CONCERN_OPTIONS.map((o) => {
+            const on = concerns.includes(o.value);
+            return (
+              <button
+                type="button"
+                key={o.value}
+                onClick={() => toggleConcern(o.value)}
+                className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition select-none ${
+                  on
+                    ? "border-[#1e3a2c] bg-[#1e3a2c] text-[#f0ead6]"
+                    : "border-[#1e3a2c]/15 bg-white text-[#1e3a2c]"
+                }`}
+              >
+                <span>{o[lang]}</span>
+              </button>
+            );
+          })}
         </div>
       </fieldset>
 
