@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowRight, Sparkles, Sun } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
 import {
@@ -48,13 +49,8 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
         </div>
 
         <div className="relative flex items-center justify-between">
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[#f0ead6] backdrop-blur"
-            aria-label={dict.conta.titulo}
-          >
-            <Sun className="h-4 w-4" />
-          </button>
+          <ThemeToggle />
+          <span className="sr-only">{dict.conta.titulo}</span>
           <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest backdrop-blur">
             {lang.toUpperCase()}
           </span>

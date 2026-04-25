@@ -175,3 +175,19 @@
     font-family: var(--font-montserrat), sans-serif;
   }
 }
+/* === Naturall Academy: dark mode overrides === */
+.dark { color-scheme: dark; }
+.dark .bg-\[\#f0ead6\] { background-color: #0f1f17; }
+.dark .text-\[\#3a3a3a\] { color: #d4d4c8; }
+.dark .bg-white { background-color: #1a2920; }
+.dark .text-\[\#1e3a2c\] { color: #f0ead6; }
+.dark .text-\[\#6b6b6b\] { color: #a3a39d; }
+.dark .border-\[\#1e3a2c\]\/15 { border-color: rgba(240,234,214,0.10); }
+.dark .border-\[\#1e3a2c\]\/20 { border-color: rgba(240,234,214,0.12); }
+.dark .border-\[\#1e3a2c\]\/5 { border-color: rgba(240,234,214,0.06); }
+.dark .text-\[\#1e3a2c\]\/40 { color: rgba(240,234,214,0.45); }
+.dark .text-\[\#1e3a2c\]\/30 { color: rgba(240,234,214,0.35); }
+.dark .bg-\[\#1e3a2c\]\/5 { background-color: rgba(240,234,214,0.05); }
+.dark .bg-\[\#1e3a2c\]\/10 { background-color: rgba(240,234,214,0.08); }
+.dark .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3); }
+
