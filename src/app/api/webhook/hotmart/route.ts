@@ -33,11 +33,15 @@ type HotmartPayload = {
       email?: string;
       name?: string;
       checkout_phone?: string;
-      // Hotmart envia idioma do checkout em "language" quando habilitado
       language?: string;
-      // Campos personalizados do checkout vem em "custom_fields"
       custom_fields?: Record<string, string> | { name: string; value: string }[];
     };
+    subscriber?: {
+      email?: string;
+      name?: string;
+      code?: string;
+    };
+    customer?: { email?: string; name?: string };
     purchase?: {
       transaction?: string;
       order_date?: number;
@@ -126,10 +130,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
 
-  const email = payload.data.buyer?.email?.trim().toLowerCase();
+  const email = (
+    payload.data.buyer?.email ??
+    payload.data.subscriber?.email ??
+    payload.data.customer?.email ??
+    ""
+  )
+    .trim()
+    .toLowerCase();
   const event = payload.event;
   if (!email || !event) {
-    return NextResponse.json({ error: "missing email or event" }, { status: 400 });
+    console.warn("[hotmart webhook] missing email/event", { event, keys: Object.keys(payload.data ?? {}) });
+    return NextResponse.json(
+      { error: "missing email or event", event, data_keys: Object.keys(payload.data ?? {}) },
+      { status: 400 },
+    );
   }
 
   const supabase = createSupabaseAdminClient();
