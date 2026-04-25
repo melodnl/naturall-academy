@@ -191,3 +191,11 @@
 .dark .bg-\[\#1e3a2c\]\/10 { background-color: rgba(240,234,214,0.08); }
 .dark .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3); }
 
+
+/* BottomNav (fixed bottom) — escopado em nav.fixed pra nao afetar hero/cards verdes */
+.dark nav.fixed.bg-white\/95 { background-color: rgba(26,41,32,0.95); }
+.dark nav.fixed .bg-\[\#1e3a2c\] { background-color: #f0ead6; }
+.dark nav.fixed .text-\[\#f0ead6\] { color: #1a2920; }
+.dark nav.fixed .border-\[\#1e3a2c\]\/10,
+.dark .border-\[\#1e3a2c\]\/10 { border-color: rgba(240,234,214,0.10); }
+
