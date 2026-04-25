@@ -41,9 +41,17 @@ export async function sendMagicLink(
     };
   }
 
-  const host = (await headers()).get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  const redirectTo = `${protocol}://${host}/auth/callback?next=${encodeURIComponent(next)}`;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  let baseUrl: string;
+  if (siteUrl) {
+    baseUrl = siteUrl.replace(/\/+$/, "");
+  } else {
+    const h = await headers();
+    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+    const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+    baseUrl = `${proto}://${host}`;
+  }
+  const redirectTo = `${baseUrl}/auth/callback?next=${encodeURIComponent(next)}`;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
