@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#1e3a2c"/>
+  <text x="90" y="78" font-family="Georgia, serif" font-size="44" font-weight="bold"
+        text-anchor="middle" fill="#b8924f">NA</text>
+  <text x="90" y="108" font-family="Helvetica, sans-serif" font-size="13" font-weight="bold"
+        text-anchor="middle" fill="#f0ead6" letter-spacing="3">NATURALL</text>
+  <text x="90" y="128" font-family="Helvetica, sans-serif" font-size="10"
+        text-anchor="middle" fill="#f0ead6" letter-spacing="2" opacity="0.8">ACADEMY</text>
+</svg>

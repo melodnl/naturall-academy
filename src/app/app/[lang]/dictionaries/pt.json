@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Naturall Academy",
+    "tagline": "ciência · natureza · cuidado"
+  },
+  "nav": {
+    "home": "Início",
+    "categorias": "Categorias",
+    "receitas": "Receitas",
+    "favoritas": "Favoritas",
+    "conta": "Conta",
+    "sair": "Sair"
+  },
+  "login": {
+    "titulo": "Entrar",
+    "subtitulo": "Use o e-mail da sua compra. Enviaremos um link mágico.",
+    "email": "Seu e-mail",
+    "enviar": "Receber link de acesso",
+    "enviado": "Link enviado! Confira sua caixa de entrada.",
+    "erro_nao_assinante": "E-mail não encontrado. Compre o acesso para entrar.",
+    "comprar": "Comprar acesso"
+  },
+  "home": {
+    "ola": "Olá",
+    "buscar": "Buscar receitas...",
+    "todas_categorias": "Todas as categorias",
+    "ver_tudo": "Ver tudo"
+  },
+  "receita": {
+    "ingredientes": "Ingredientes",
+    "modo_preparo": "Modo de preparo",
+    "conservante": "Conservante",
+    "validade": "Validade",
+    "favoritar": "Favoritar",
+    "favoritada": "Favoritada",
+    "compartilhar": "Compartilhar",
+    "tempo": "Tempo",
+    "dificuldade": "Dificuldade",
+    "dificuldade_facil": "Fácil",
+    "dificuldade_medio": "Médio",
+    "dificuldade_dificil": "Difícil",
+    "minutos": "min"
+  },
+  "categorias": {
+    "facial": "Facial",
+    "corporal": "Corporal",
+    "cabelo": "Cabelo",
+    "maos_pes": "Mãos e Pés",
+    "labios": "Lábios",
+    "outros": "Outros"
+  },
+  "favoritas": {
+    "titulo": "Suas favoritas",
+    "vazio": "Você ainda não favoritou nenhuma receita.",
+    "explorar": "Explorar receitas"
+  },
+  "conta": {
+    "titulo": "Minha conta",
+    "email": "E-mail",
+    "plano": "Plano",
+    "ativo": "Ativo",
+    "expirado": "Expirado",
+    "renova_em": "Renova em",
+    "idioma": "Idioma",
+    "sair": "Sair da conta"
+  },
+  "trocar_idioma": "Idioma"
+}

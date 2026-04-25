@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Naturall Academy",
+    "tagline": "science · nature · care"
+  },
+  "nav": {
+    "home": "Home",
+    "categorias": "Categories",
+    "receitas": "Recipes",
+    "favoritas": "Favorites",
+    "conta": "Account",
+    "sair": "Sign out"
+  },
+  "login": {
+    "titulo": "Sign in",
+    "subtitulo": "Use the email from your purchase. We'll send a magic link.",
+    "email": "Your email",
+    "enviar": "Send magic link",
+    "enviado": "Link sent! Check your inbox.",
+    "erro_nao_assinante": "Email not found. Purchase access to continue.",
+    "comprar": "Buy access"
+  },
+  "home": {
+    "ola": "Hi",
+    "buscar": "Search recipes...",
+    "todas_categorias": "All categories",
+    "ver_tudo": "See all"
+  },
+  "receita": {
+    "ingredientes": "Ingredients",
+    "modo_preparo": "Instructions",
+    "conservante": "Preservative",
+    "validade": "Shelf life",
+    "favoritar": "Favorite",
+    "favoritada": "Favorited",
+    "compartilhar": "Share",
+    "tempo": "Time",
+    "dificuldade": "Difficulty",
+    "dificuldade_facil": "Easy",
+    "dificuldade_medio": "Medium",
+    "dificuldade_dificil": "Hard",
+    "minutos": "min"
+  },
+  "categorias": {
+    "facial": "Facial",
+    "corporal": "Body",
+    "cabelo": "Hair",
+    "maos_pes": "Hands & Feet",
+    "labios": "Lips",
+    "outros": "Other"
+  },
+  "favoritas": {
+    "titulo": "Your favorites",
+    "vazio": "You haven't favorited any recipes yet.",
+    "explorar": "Browse recipes"
+  },
+  "conta": {
+    "titulo": "My account",
+    "email": "Email",
+    "plano": "Plan",
+    "ativo": "Active",
+    "expirado": "Expired",
+    "renova_em": "Renews on",
+    "idioma": "Language",
+    "sair": "Sign out"
+  },
+  "trocar_idioma": "Language"
+}
