@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Mail, Globe, LogOut, BadgeCheck } from "lucide-react";
+import { Mail, Globe, LogOut, BadgeCheck, Star, Sparkles } from "lucide-react";
 import { getDictionary, hasLocale, SUPPORTED_LOCALES } from "../../dictionaries";
+import { getMyProfile } from "@/lib/db/profile";
+import { getMyAttemptsWithRecipes } from "@/lib/db/attempts";
 
 export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta">) {
   const { lang } = await params;
@@ -9,12 +11,14 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
   if (lang !== "en") redirect("/app/en/conta");
   const dict = await getDictionary(lang);
 
-  // Mock — sair de verdade vai vir junto com auth real
+  const [profile, attempts] = await Promise.all([
+    getMyProfile(),
+    getMyAttemptsWithRecipes(lang, 50),
+  ]);
+
   const user = {
-    email: "comercial.melodaniel@gmail.com",
+    email: profile?.email ?? "",
     plan: "Mega Combo",
-    status: "active" as const,
-    expires_at: "2027-04-25",
   };
 
   return (
@@ -42,10 +46,62 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
             <div className="mt-0.5 font-semibold">{dict.conta.ativo}</div>
           </div>
           <div className="rounded-lg bg-white/10 p-2.5 backdrop-blur">
-            <div className="text-[#f0ead6]/60">{dict.conta.renova_em}</div>
-            <div className="mt-0.5 font-semibold">{user.expires_at}</div>
+            <div className="text-[#f0ead6]/60">Tried</div>
+            <div className="mt-0.5 font-semibold">{attempts.length}</div>
           </div>
         </div>
+      </section>
+
+      <section className="mt-6">
+        <div className="mb-2 flex items-center justify-between px-1">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-[#6b6b6b]">
+            My recipes
+          </h2>
+          <Link
+            href={`/app/${lang}/onboarding`}
+            className="flex items-center gap-1 text-xs font-medium text-[#b8924f]"
+          >
+            <Sparkles className="h-3 w-3" />
+            Personalize
+          </Link>
+        </div>
+        {attempts.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-[#1e3a2c]/15 bg-white/50 p-6 text-center">
+            <p className="text-sm text-[#6b6b6b]">
+              You haven't tried any recipes yet. Open one and tap{" "}
+              <span className="font-semibold text-[#1e3a2c]">"I made this recipe"</span>.
+            </p>
+          </div>
+        ) : (
+          <ul className="overflow-hidden rounded-2xl bg-white shadow-sm">
+            {attempts.map((a, i) => (
+              <li key={a.recipe_id} className={i > 0 ? "border-t border-[#1e3a2c]/5" : ""}>
+                <Link
+                  href={`/app/${lang}/receitas/${a.slug}`}
+                  className="flex items-center gap-3 px-4 py-3 transition active:bg-[#f0ead6]"
+                >
+                  <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-[#1e3a2c]/5 text-xs font-bold text-[#1e3a2c]">
+                    #{a.number}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-sm font-medium text-[#1e3a2c]">
+                      {a.title}
+                    </div>
+                    <div className="mt-0.5 flex items-center gap-2 text-[10px] text-[#6b6b6b]">
+                      <span>{new Date(a.tried_at).toLocaleDateString("en-US")}</span>
+                      {a.rating && (
+                        <span className="flex items-center gap-0.5 text-[#d4a96a]">
+                          <Star className="h-3 w-3 fill-current" />
+                          {a.rating}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="mt-6">

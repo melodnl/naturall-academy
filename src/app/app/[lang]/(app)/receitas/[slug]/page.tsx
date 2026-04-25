@@ -4,6 +4,8 @@ import { ArrowLeft, Heart, Share2, ShieldCheck, Beaker, Calendar } from "lucide-
 import { getDictionary, hasLocale } from "../../../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
 import { getRecipeBySlug } from "@/lib/db/recipes";
+import { getMyAttemptForRecipe } from "@/lib/db/attempts";
+import { TriedButton } from "@/components/app/TriedButton";
 
 export default async function ReceitaPage({
   params,
@@ -17,6 +19,7 @@ export default async function ReceitaPage({
   if (!recipe) notFound();
 
   const meta = CATEGORY_META[recipe.category_slug];
+  const attempt = await getMyAttemptForRecipe(recipe.id);
 
   return (
     <main>
@@ -72,8 +75,18 @@ export default async function ReceitaPage({
         )}
       </section>
 
+      {/* TRIED */}
+      <section className="mx-5 mt-4">
+        <TriedButton
+          lang={lang}
+          recipeId={recipe.id}
+          slug={recipe.slug}
+          initial={attempt ? { rating: attempt.rating, notes: attempt.notes } : null}
+        />
+      </section>
+
       {/* META */}
-      <section className="mx-5 mt-4 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-sm">
+      <section className="mx-5 mt-3 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-sm">
         <div className="flex flex-col items-center gap-1 rounded-lg p-2">
           <Beaker className="h-4 w-4 text-[#b8924f]" />
           <div className="text-[10px] text-[#6b6b6b]">Yield</div>

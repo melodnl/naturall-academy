@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { BottomNav } from "@/components/app/BottomNav";
+import { getMyProfile } from "@/lib/db/profile";
 
 export default async function AuthedLayout({
   children,
@@ -9,6 +10,11 @@ export default async function AuthedLayout({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
+
+  const profile = await getMyProfile();
+  if (profile && !profile.onboarded_at) {
+    redirect(`/app/${lang}/onboarding`);
+  }
 
   return (
     <div className="min-h-screen bg-[#f0ead6] text-[#3a3a3a]">

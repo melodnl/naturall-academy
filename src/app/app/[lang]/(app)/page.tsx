@@ -8,6 +8,7 @@ import {
   getFeaturedRecipes,
   type CategorySlug,
 } from "@/lib/db/recipes";
+import { getMyAttemptCount } from "@/lib/db/attempts";
 
 export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   const { lang } = await params;
@@ -16,13 +17,13 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   if (lang !== "en") redirect("/app/en");
 
   const dict = await getDictionary(lang);
-  const [counts, featured] = await Promise.all([
+  const [counts, featured, tested] = await Promise.all([
     getCategoryCounts(),
     getFeaturedRecipes(lang, 5),
+    getMyAttemptCount(),
   ]);
 
   const totalRecipes = Object.values(counts).reduce((s, n) => s + n, 0);
-  const tested = 0;
   const progress = totalRecipes > 0 ? Math.round((tested / totalRecipes) * 100) : 0;
   const categoriasOrdem: CategorySlug[] = ["facial", "corporal", "cabelo", "maos_pes", "labios", "outros"];
 
