@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export type LoginState =
   | { ok: true; message: string }
@@ -20,16 +21,17 @@ export async function sendMagicLink(
     return { ok: false, code: "invalid_email", message: "E-mail inválido." };
   }
 
-  const supabase = await createSupabaseServerClient();
-
-  // Verifica se o email já é assinante (foi criado pelo webhook)
-  // Se não existir subscriber e ainda não houver auth.user com esse email,
-  // bloqueia: precisa comprar primeiro.
-  const { data: subscriber } = await supabase
+  // Verifica se o email já é assinante (foi criado pelo webhook).
+  // Usa admin client porque a RLS de subscribers exige auth.uid() = user_id,
+  // mas no login o usuário ainda não está autenticado.
+  const admin = createSupabaseAdminClient();
+  const { data: subscriber } = await admin
     .from("subscribers")
     .select("status,email")
     .eq("email", email)
     .maybeSingle();
+
+  const supabase = await createSupabaseServerClient();
 
   if (!subscriber) {
     return {
