@@ -37,7 +37,7 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
         className="relative flex min-h-[78vh] flex-col overflow-hidden rounded-b-[2rem] px-6 pt-10 pb-10 text-[#f0ead6]"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, rgba(15,36,25,0.55) 0%, rgba(15,36,25,0.85) 60%, rgba(15,36,25,0.97) 100%), url('https://images.unsplash.com/photo-1502740479091-635887520276?auto=format&fit=crop&w=1200&q=80')",
+            "linear-gradient(to bottom, rgba(15,36,25,0.45) 0%, rgba(15,36,25,0.78) 55%, rgba(15,36,25,0.96) 100%), url('/images/hero2.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
