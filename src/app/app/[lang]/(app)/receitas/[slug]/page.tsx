@@ -22,7 +22,7 @@ export default async function ReceitaPage({
     <main>
       {/* HERO */}
       <section
-        className={`relative overflow-hidden rounded-b-3xl bg-gradient-to-br ${meta.gradient} px-5 pt-6 pb-8 text-[#f0ead6]`}
+        className={`relative overflow-hidden rounded-b-3xl bg-gradient-to-br ${meta.gradient} px-5 pt-6 pb-12 text-[#f0ead6]`}
       >
         <div className="mb-4 flex items-center justify-between">
           <Link
@@ -73,7 +73,7 @@ export default async function ReceitaPage({
       </section>
 
       {/* META */}
-      <section className="mx-5 -mt-5 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-sm">
+      <section className="mx-5 mt-4 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-sm">
         <div className="flex flex-col items-center gap-1 rounded-lg p-2">
           <Beaker className="h-4 w-4 text-[#b8924f]" />
           <div className="text-[10px] text-[#6b6b6b]">Yield</div>
