@@ -29,49 +29,50 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   return (
     <main>
       {/* HERO */}
-      <section className="relative overflow-hidden rounded-b-3xl bg-gradient-to-br from-[#1e3a2c] via-[#2d5240] to-[#1e3a2c] px-5 pt-12 pb-8 text-[#f0ead6]">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-6 h-32 w-32 rounded-full bg-[#b8924f] blur-3xl" />
-          <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-[#f0ead6] blur-3xl" />
+      <section className="relative flex min-h-[78vh] flex-col overflow-hidden rounded-b-[2rem] bg-gradient-to-br from-[#1e3a2c] via-[#2d5240] to-[#0f2419] px-6 pt-10 pb-10 text-[#f0ead6]">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[#b8924f] blur-3xl" />
+          <div className="absolute bottom-10 left-0 h-72 w-72 rounded-full bg-[#3a7a5c] blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-[#f0ead6]/30 blur-3xl" />
         </div>
 
-        <div className="relative">
-          <div className="mb-4 flex items-center justify-between">
-            <button
-              type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-[#f0ead6] backdrop-blur"
-              aria-label={dict.conta.titulo}
-            >
-              <Sun className="h-4 w-4" />
-            </button>
-            <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest backdrop-blur">
-              {lang.toUpperCase()}
-            </span>
-          </div>
+        <div className="relative flex items-center justify-between">
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[#f0ead6] backdrop-blur"
+            aria-label={dict.conta.titulo}
+          >
+            <Sun className="h-4 w-4" />
+          </button>
+          <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest backdrop-blur">
+            {lang.toUpperCase()}
+          </span>
+        </div>
 
-          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-[#b8924f]">
+        <div className="relative mt-auto">
+          <p className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-[#d4a96a]">
             <Sparkles className="h-3 w-3" />
             {dict.meta.tagline}
           </p>
-          <h1 className="mt-2 text-2xl font-bold leading-tight sm:text-3xl">
-            {totalRecipes} Natural Recipes
+          <h1 className="mt-3 text-4xl font-bold leading-[1.05] sm:text-5xl">
+            {totalRecipes} Natural<br />Recipes
           </h1>
-          <p className="mt-2 text-sm text-[#f0ead6]/80">
-            Your complete library of artisan cosmetics.
+          <p className="mt-3 max-w-sm text-base leading-relaxed text-[#f0ead6]/85">
+            Your complete library of artisan cosmetics. 600+ recipes, ingredients and step-by-step.
           </p>
 
           <Link
             href={`/app/${lang}/categorias`}
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#b8924f] to-[#d4a96a] px-5 py-2.5 text-sm font-semibold text-[#1e3a2c] shadow-lg shadow-[#b8924f]/30 transition active:scale-95"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#3a7a5c] via-[#b8924f] to-[#d4a96a] px-7 py-3.5 text-base font-semibold text-white shadow-xl shadow-[#b8924f]/40 transition active:scale-95"
           >
             Start now
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>
 
       {/* PROGRESSO */}
-      <section className="mx-5 -mt-5 rounded-2xl bg-white p-4 shadow-sm shadow-[#1e3a2c]/5">
+      <section className="mx-5 mt-5 rounded-2xl bg-white p-4 shadow-sm shadow-[#1e3a2c]/5">
         <div className="flex items-center justify-between">
           <span className="text-sm font-semibold text-[#1e3a2c]">Your progress</span>
           <span className="text-sm font-bold text-[#b8924f]">{progress}%</span>
