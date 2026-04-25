@@ -5,7 +5,7 @@ module.exports = {
     {
       name: "naturall-academy",
       script: "node_modules/next/dist/bin/next",
-      args: "start -p 3000 -H 127.0.0.1",
+      args: "start -p 3001 -H 127.0.0.1",
       cwd: __dirname,
       instances: 1,
       exec_mode: "fork",
