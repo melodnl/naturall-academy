@@ -95,7 +95,7 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
           >
             <Mail className="h-4 w-4 text-[#b8924f]" />
             <span className="text-sm font-medium text-[#1e3a2c]">
-              {lang === "pt" ? "Suporte" : lang === "es" ? "Soporte" : "Support"}
+              Support
             </span>
           </button>
           <button
