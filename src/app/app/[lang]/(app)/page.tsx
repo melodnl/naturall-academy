@@ -5,10 +5,11 @@ import { getDictionary, hasLocale } from "../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
 import {
   getCategoryCounts,
-  getFeaturedRecipes,
+  getRecommendedRecipes,
   type CategorySlug,
 } from "@/lib/db/recipes";
 import { getMyAttemptCount } from "@/lib/db/attempts";
+import { getMyProfile } from "@/lib/db/profile";
 
 export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   const { lang } = await params;
@@ -17,11 +18,13 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   if (lang !== "en") redirect("/app/en");
 
   const dict = await getDictionary(lang);
+  const profile = await getMyProfile();
   const [counts, featured, tested] = await Promise.all([
     getCategoryCounts(),
-    getFeaturedRecipes(lang, 5),
+    getRecommendedRecipes(profile?.concerns ?? null, lang, 5),
     getMyAttemptCount(),
   ]);
+  const personalized = (profile?.concerns?.length ?? 0) > 0;
 
   const totalRecipes = Object.values(counts).reduce((s, n) => s + n, 0);
   const progress = totalRecipes > 0 ? Math.round((tested / totalRecipes) * 100) : 0;
@@ -30,11 +33,18 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   return (
     <main>
       {/* HERO */}
-      <section className="relative flex min-h-[78vh] flex-col overflow-hidden rounded-b-[2rem] bg-gradient-to-br from-[#1e3a2c] via-[#2d5240] to-[#0f2419] px-6 pt-10 pb-10 text-[#f0ead6]">
-        <div className="absolute inset-0 opacity-20">
+      <section
+        className="relative flex min-h-[78vh] flex-col overflow-hidden rounded-b-[2rem] px-6 pt-10 pb-10 text-[#f0ead6]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom, rgba(15,36,25,0.55) 0%, rgba(15,36,25,0.85) 60%, rgba(15,36,25,0.97) 100%), url('https://images.unsplash.com/photo-1502740479091-635887520276?auto=format&fit=crop&w=1200&q=80')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 opacity-30 mix-blend-overlay">
           <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[#b8924f] blur-3xl" />
           <div className="absolute bottom-10 left-0 h-72 w-72 rounded-full bg-[#3a7a5c] blur-3xl" />
-          <div className="absolute top-1/3 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-[#f0ead6]/30 blur-3xl" />
         </div>
 
         <div className="relative flex items-center justify-between">
@@ -124,9 +134,18 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
         </div>
       </section>
 
-      {/* DESTAQUES */}
+      {/* DESTAQUES / RECOMENDADAS */}
       <section className="mt-6 px-5">
-        <h2 className="mb-3 text-base font-semibold text-[#1e3a2c]">Featured</h2>
+        <div className="mb-3 flex items-center gap-2">
+          <h2 className="text-base font-semibold text-[#1e3a2c]">
+            {personalized ? "Recommended for you" : "Featured"}
+          </h2>
+          {personalized && (
+            <span className="rounded-full bg-[#3a7a5c]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#3a7a5c]">
+              ✨ Match
+            </span>
+          )}
+        </div>
         <div className="space-y-3">
           {featured.map((r) => (
             <Link

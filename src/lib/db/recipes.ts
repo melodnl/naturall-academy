@@ -118,6 +118,66 @@ export async function getRecipesByCategory(
   });
 }
 
+const CONCERN_TO_CATEGORY: Record<string, CategorySlug[]> = {
+  acne: ["facial"],
+  hidratacao: ["facial", "corporal"],
+  antiidade: ["facial"],
+  manchas: ["facial"],
+  cabelo_seco: ["cabelo"],
+  cabelo_caspa: ["cabelo"],
+  labios: ["labios"],
+  maos_unhas: ["maos_pes"],
+};
+
+const CATEGORY_ID_BY_SLUG: Record<CategorySlug, number> = {
+  facial: 1,
+  corporal: 2,
+  cabelo: 3,
+  maos_pes: 4,
+  labios: 5,
+  outros: 6,
+};
+
+export async function getRecommendedRecipes(
+  concerns: string[] | null,
+  locale: Locale,
+  limit = 5,
+): Promise<RecipeListItem[]> {
+  const cats = new Set<CategorySlug>();
+  for (const c of concerns ?? []) {
+    for (const cat of CONCERN_TO_CATEGORY[c] ?? []) cats.add(cat);
+  }
+  if (cats.size === 0) return getFeaturedRecipes(locale, limit);
+
+  const supabase = await createSupabaseServerClient();
+  const catIds = [...cats].map((slug) => CATEGORY_ID_BY_SLUG[slug]);
+  const { data } = await supabase
+    .from("recipes")
+    .select(
+      `id, slug, number, category_id, category_sub, yield_text, shelf_life_days,
+       recipe_translations!inner ( title, subtitle, ingredients, steps, how_to_use, warnings )`,
+    )
+    .in("category_id", catIds)
+    .eq("recipe_translations.locale", locale)
+    .order("number", { ascending: true })
+    .limit(limit);
+
+  return (data ?? []).map((r) => {
+    const tr = pickTranslation(r as unknown as RawRecipe, locale);
+    return {
+      id: r.id,
+      slug: r.slug,
+      number: r.number,
+      category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
+      category_sub: r.category_sub,
+      yield_text: r.yield_text,
+      shelf_life_days: r.shelf_life_days,
+      title: tr?.title ?? "",
+      subtitle: tr?.subtitle ?? null,
+    };
+  });
+}
+
 export async function getFeaturedRecipes(
   locale: Locale,
   limit = 5,
