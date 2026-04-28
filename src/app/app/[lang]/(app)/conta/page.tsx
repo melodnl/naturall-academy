@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Mail, Globe, LogOut, BadgeCheck, Star, Sparkles } from "lucide-react";
+import { Mail, Globe, BadgeCheck, Star, Sparkles } from "lucide-react";
 import { getDictionary, hasLocale, SUPPORTED_LOCALES } from "../../dictionaries";
 import { getMyProfile } from "@/lib/db/profile";
 import { getMyAttemptsWithRecipes } from "@/lib/db/attempts";
+import { PasswordForm } from "./password-form";
+import { SignOutButton } from "./sign-out-button";
 
 export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta">) {
   const { lang } = await params;
@@ -145,22 +147,19 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
 
       <section className="mt-6">
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
-          <button
-            type="button"
-            className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition active:bg-[#f0ead6]"
-          >
-            <Mail className="h-4 w-4 text-[#b8924f]" />
-            <span className="text-sm font-medium text-[#1e3a2c]">
-              Support
-            </span>
-          </button>
-          <button
-            type="button"
-            className="flex w-full items-center gap-3 border-t border-[#1e3a2c]/5 px-4 py-3.5 text-left text-red-700 transition active:bg-red-50"
-          >
-            <LogOut className="h-4 w-4" />
-            <span className="text-sm font-medium">{dict.conta.sair}</span>
-          </button>
+          <PasswordForm dict={dict} />
+          <div className="border-t border-[#1e3a2c]/5">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition active:bg-[#f0ead6]"
+            >
+              <Mail className="h-4 w-4 text-[#b8924f]" />
+              <span className="text-sm font-medium text-[#1e3a2c]">
+                Support
+              </span>
+            </button>
+          </div>
+          <SignOutButton dict={dict} />
         </div>
       </section>
     </main>

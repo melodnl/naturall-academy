@@ -13,12 +13,19 @@
   },
   "login": {
     "titulo": "Sign in",
-    "subtitulo": "Use the email from your purchase. We'll send a magic link.",
+    "subtitulo": "Use the email from your purchase.",
     "email": "Your email",
+    "senha": "Password",
+    "entrar": "Sign in",
     "enviar": "Send magic link",
     "enviado": "Link sent! Check your inbox.",
     "erro_nao_assinante": "Email not found. Purchase access to continue.",
-    "comprar": "Buy access"
+    "erro_credenciais": "Wrong email or password.",
+    "comprar": "Buy access",
+    "continuar_google": "Continue with Google",
+    "ou": "or",
+    "usar_magic_link": "Sign in without password (magic link)",
+    "usar_senha": "Sign in with password"
   },
   "home": {
     "ola": "Hi",
@@ -62,7 +69,12 @@
     "expirado": "Expired",
     "renova_em": "Renews on",
     "idioma": "Language",
-    "sair": "Sign out"
+    "sair": "Sign out",
+    "definir_senha": "Set / change password",
+    "nova_senha": "New password (min 8 chars)",
+    "confirmar_senha": "Confirm password",
+    "salvar": "Save",
+    "cancelar": "Cancel"
   },
   "trocar_idioma": "Language"
 }

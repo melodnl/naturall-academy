@@ -13,12 +13,19 @@
   },
   "login": {
     "titulo": "Entrar",
-    "subtitulo": "Use o e-mail da sua compra. Enviaremos um link mágico.",
+    "subtitulo": "Use o e-mail da sua compra.",
     "email": "Seu e-mail",
+    "senha": "Senha",
+    "entrar": "Entrar",
     "enviar": "Receber link de acesso",
     "enviado": "Link enviado! Confira sua caixa de entrada.",
     "erro_nao_assinante": "E-mail não encontrado. Compre o acesso para entrar.",
-    "comprar": "Comprar acesso"
+    "erro_credenciais": "E-mail ou senha incorretos.",
+    "comprar": "Comprar acesso",
+    "continuar_google": "Continuar com Google",
+    "ou": "ou",
+    "usar_magic_link": "Entrar sem senha (link mágico)",
+    "usar_senha": "Entrar com senha"
   },
   "home": {
     "ola": "Olá",
@@ -62,7 +69,12 @@
     "expirado": "Expirado",
     "renova_em": "Renova em",
     "idioma": "Idioma",
-    "sair": "Sair da conta"
+    "sair": "Sair da conta",
+    "definir_senha": "Definir / alterar senha",
+    "nova_senha": "Nova senha (mín. 8 caracteres)",
+    "confirmar_senha": "Confirmar senha",
+    "salvar": "Salvar",
+    "cancelar": "Cancelar"
   },
   "trocar_idioma": "Idioma"
 }
