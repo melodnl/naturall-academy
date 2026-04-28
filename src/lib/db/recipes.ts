@@ -60,7 +60,7 @@ type RawRecipe = {
   }[];
 };
 
-function pickTranslation(r: RawRecipe, locale: Locale) {
+function pickTranslation(r: RawRecipe) {
   return r.recipe_translations[0];
 }
 
@@ -103,7 +103,7 @@ export async function getRecipesByCategory(
     .limit(limit);
 
   return (data ?? []).map((r) => {
-    const tr = pickTranslation(r as unknown as RawRecipe, locale);
+    const tr = pickTranslation(r as unknown as RawRecipe);
     return {
       id: r.id,
       slug: r.slug,
@@ -163,7 +163,7 @@ export async function getRecommendedRecipes(
     .limit(limit);
 
   return (data ?? []).map((r) => {
-    const tr = pickTranslation(r as unknown as RawRecipe, locale);
+    const tr = pickTranslation(r as unknown as RawRecipe);
     return {
       id: r.id,
       slug: r.slug,
@@ -196,7 +196,7 @@ export async function getFeaturedRecipes(
     .limit(limit);
 
   return (data ?? []).map((r) => {
-    const tr = pickTranslation(r as unknown as RawRecipe, locale);
+    const tr = pickTranslation(r as unknown as RawRecipe);
     return {
       id: r.id,
       slug: r.slug,
@@ -228,7 +228,7 @@ export async function getRecipeBySlug(
 
   if (!data) return null;
   const r = data as unknown as RawRecipe;
-  const tr = pickTranslation(r, locale);
+  const tr = pickTranslation(r);
   return {
     id: r.id,
     slug: r.slug,
@@ -275,7 +275,7 @@ export async function searchRecipes(
 
   const { data } = await query;
   return (data ?? []).map((r) => {
-    const tr = pickTranslation(r as unknown as RawRecipe, locale);
+    const tr = pickTranslation(r as unknown as RawRecipe);
     return {
       id: r.id,
       slug: r.slug,

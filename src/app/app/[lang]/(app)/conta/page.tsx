@@ -70,8 +70,8 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
         {attempts.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-[#1e3a2c]/15 bg-white/50 p-6 text-center">
             <p className="text-sm text-[#6b6b6b]">
-              You haven't tried any recipes yet. Open one and tap{" "}
-              <span className="font-semibold text-[#1e3a2c]">"I made this recipe"</span>.
+              You haven&apos;t tried any recipes yet. Open one and tap{" "}
+              <span className="font-semibold text-[#1e3a2c]">&ldquo;I made this recipe&rdquo;</span>.
             </p>
           </div>
         ) : (
