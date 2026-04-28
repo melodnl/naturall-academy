@@ -45,4 +45,5 @@ scripts/data/
 
 # screenshots
 *.png
+!public/images/**/*.png
 .playwright-mcp/
