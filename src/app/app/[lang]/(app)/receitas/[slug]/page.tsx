@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ArrowLeft, Heart, Share2, ShieldCheck, Beaker, Calendar } from "lucide-react";
 import { getDictionary, hasLocale } from "../../../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
@@ -12,7 +12,6 @@ export default async function ReceitaPage({
 }: PageProps<"/app/[lang]/receitas/[slug]">) {
   const { lang, slug } = await params;
   if (!hasLocale(lang)) notFound();
-  if (lang !== "en") redirect(`/app/en/receitas/${slug}`);
   const dict = await getDictionary(lang);
 
   const recipe = await getRecipeBySlug(slug, lang);
@@ -89,14 +88,14 @@ export default async function ReceitaPage({
       <section className="mx-5 mt-3 grid grid-cols-3 gap-2 rounded-2xl bg-white p-3 shadow-sm">
         <div className="flex flex-col items-center gap-1 rounded-lg p-2">
           <Beaker className="h-4 w-4 text-[#b8924f]" />
-          <div className="text-[10px] text-[#6b6b6b]">Yield</div>
+          <div className="text-[10px] text-[#6b6b6b]">{dict.receita.rendimento}</div>
           <div className="text-center text-xs font-bold leading-tight text-[#1e3a2c]">
             {recipe.yield_text ?? "—"}
           </div>
         </div>
         <div className="flex flex-col items-center gap-1 rounded-lg p-2">
           <ShieldCheck className="h-4 w-4 text-[#b8924f]" />
-          <div className="text-[10px] text-[#6b6b6b]">Ingredients</div>
+          <div className="text-[10px] text-[#6b6b6b]">{dict.receita.ingredientes}</div>
           <div className="text-sm font-bold text-[#1e3a2c]">
             {recipe.ingredients.length}
           </div>
@@ -159,7 +158,7 @@ export default async function ReceitaPage({
       {/* HOW TO USE */}
       {recipe.how_to_use && (
         <section className="mt-6 px-5">
-          <h2 className="mb-3 text-base font-semibold text-[#1e3a2c]">How to use</h2>
+          <h2 className="mb-3 text-base font-semibold text-[#1e3a2c]">{dict.receita.como_usar}</h2>
           <p className="rounded-2xl bg-white p-4 text-sm leading-relaxed text-[#3a3a3a] shadow-sm">
             {recipe.how_to_use}
           </p>
@@ -171,7 +170,7 @@ export default async function ReceitaPage({
         <section className="mt-6 px-5">
           <div className="rounded-2xl border border-[#b8924f]/30 bg-[#b8924f]/5 p-4">
             <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#1e3a2c]">
-              Warnings
+              {dict.receita.avisos}
             </div>
             <ul className="space-y-1.5">
               {recipe.warnings.map((w, i) => (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/app/ThemeToggle";
 import { getDictionary, hasLocale } from "../dictionaries";
@@ -15,8 +15,6 @@ import { getMyProfile } from "@/lib/db/profile";
 export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  // EN-only por enquanto: outros idiomas redirecionam até traduções estarem prontas
-  if (lang !== "en") redirect("/app/en");
 
   const dict = await getDictionary(lang);
   const profile = await getMyProfile();
@@ -62,17 +60,17 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
             {dict.meta.tagline}
           </p>
           <h1 className="mt-3 text-4xl font-bold leading-[1.05] sm:text-5xl">
-            {totalRecipes} Natural<br />Recipes
+            {totalRecipes} {dict.home.title_natural_recipes}
           </h1>
           <p className="mt-3 max-w-sm text-base leading-relaxed text-[#f0ead6]/85">
-            Your complete library of artisan cosmetics. 600+ recipes, ingredients and step-by-step.
+            {dict.home.tagline_full}
           </p>
 
           <Link
             href={`/app/${lang}/categorias`}
             className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#3a7a5c] via-[#b8924f] to-[#d4a96a] px-7 py-3.5 text-base font-semibold text-white shadow-xl shadow-[#b8924f]/40 transition active:scale-95"
           >
-            Start now
+            {dict.home.start_now}
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
@@ -81,7 +79,7 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
       {/* PROGRESSO */}
       <section className="mx-5 mt-5 rounded-2xl bg-white p-4 shadow-sm shadow-[#1e3a2c]/5">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-[#1e3a2c]">Your progress</span>
+          <span className="text-sm font-semibold text-[#1e3a2c]">{dict.home.your_progress}</span>
           <span className="text-sm font-bold text-[#b8924f]">{progress}%</span>
         </div>
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#1e3a2c]/10">
@@ -91,7 +89,9 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
           />
         </div>
         <p className="mt-2 text-xs text-[#6b6b6b]">
-          {tested} of {totalRecipes} recipes tried
+          {dict.home.tested_of_total
+            .replace("{tested}", String(tested))
+            .replace("{total}", String(totalRecipes))}
         </p>
       </section>
 
@@ -121,7 +121,7 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
                 <div className="mt-3">
                   <div className="text-sm font-semibold">{dict.categorias[cat]}</div>
                   <div className="text-[11px] text-[#f0ead6]/70">
-                    {counts[cat]} recipes
+                    {dict.home.recipes_count.replace("{n}", String(counts[cat]))}
                   </div>
                 </div>
               </Link>
@@ -134,11 +134,11 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
       <section className="mt-6 px-5">
         <div className="mb-3 flex items-center gap-2">
           <h2 className="text-base font-semibold text-[#1e3a2c]">
-            {personalized ? "Recommended for you" : "Featured"}
+            {personalized ? dict.home.recommended_for_you : dict.home.featured}
           </h2>
           {personalized && (
             <span className="rounded-full bg-[#3a7a5c]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#3a7a5c]">
-              ✨ Match
+              ✨ {dict.home.match_badge}
             </span>
           )}
         </div>

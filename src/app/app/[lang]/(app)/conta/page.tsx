@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Mail, Globe, BadgeCheck, Star, Sparkles } from "lucide-react";
 import { getDictionary, hasLocale, SUPPORTED_LOCALES } from "../../dictionaries";
 import { getMyProfile } from "@/lib/db/profile";
@@ -10,8 +10,8 @@ import { SignOutButton } from "./sign-out-button";
 export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  if (lang !== "en") redirect("/app/en/conta");
   const dict = await getDictionary(lang);
+  const dateLocale = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en-US";
 
   const [profile, attempts] = await Promise.all([
     getMyProfile(),
@@ -48,7 +48,7 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
             <div className="mt-0.5 font-semibold">{dict.conta.ativo}</div>
           </div>
           <div className="rounded-lg bg-white/10 p-2.5 backdrop-blur">
-            <div className="text-[#f0ead6]/60">Tried</div>
+            <div className="text-[#f0ead6]/60">{dict.conta.testadas}</div>
             <div className="mt-0.5 font-semibold">{attempts.length}</div>
           </div>
         </div>
@@ -57,21 +57,21 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
       <section className="mt-6">
         <div className="mb-2 flex items-center justify-between px-1">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-[#6b6b6b]">
-            My recipes
+            {dict.conta.minhas_receitas}
           </h2>
           <Link
             href={`/app/${lang}/onboarding`}
             className="flex items-center gap-1 text-xs font-medium text-[#b8924f]"
           >
             <Sparkles className="h-3 w-3" />
-            Personalize
+            {dict.conta.personalizar}
           </Link>
         </div>
         {attempts.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-[#1e3a2c]/15 bg-white/50 p-6 text-center">
             <p className="text-sm text-[#6b6b6b]">
-              You haven&apos;t tried any recipes yet. Open one and tap{" "}
-              <span className="font-semibold text-[#1e3a2c]">&ldquo;I made this recipe&rdquo;</span>.
+              {dict.conta.vazio_testadas_pre}{" "}
+              <span className="font-semibold text-[#1e3a2c]">&ldquo;{dict.conta.fiz_essa_receita}&rdquo;</span>.
             </p>
           </div>
         ) : (
@@ -90,7 +90,7 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
                       {a.title}
                     </div>
                     <div className="mt-0.5 flex items-center gap-2 text-[10px] text-[#6b6b6b]">
-                      <span>{new Date(a.tried_at).toLocaleDateString("en-US")}</span>
+                      <span>{new Date(a.tried_at).toLocaleDateString(dateLocale)}</span>
                       {a.rating && (
                         <span className="flex items-center gap-0.5 text-[#d4a96a]">
                           <Star className="h-3 w-3 fill-current" />
@@ -112,34 +112,21 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
         </h2>
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
           {SUPPORTED_LOCALES.map((loc, i) => {
-            const available = loc === "en";
             const label = loc === "pt" ? "Português" : loc === "es" ? "Español" : "English";
-            const inner = (
-              <span className="flex items-center gap-3">
-                <Globe className="h-4 w-4 text-[#b8924f]" />
-                <span className="text-sm font-medium text-[#1e3a2c]">{label}</span>
-                {!available && (
-                  <span className="rounded-full bg-[#b8924f]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#b8924f]">
-                    soon
-                  </span>
-                )}
-              </span>
-            );
-            const className = `flex items-center justify-between px-4 py-3.5 ${
-              available ? "transition active:bg-[#f0ead6]" : "opacity-60 cursor-not-allowed"
-            } ${i > 0 ? "border-t border-[#1e3a2c]/5" : ""}`;
+            const className = `flex items-center justify-between px-4 py-3.5 transition active:bg-[#f0ead6] ${
+              i > 0 ? "border-t border-[#1e3a2c]/5" : ""
+            }`;
 
-            return available ? (
+            return (
               <Link key={loc} href={`/app/${loc}/conta`} className={className}>
-                {inner}
+                <span className="flex items-center gap-3">
+                  <Globe className="h-4 w-4 text-[#b8924f]" />
+                  <span className="text-sm font-medium text-[#1e3a2c]">{label}</span>
+                </span>
                 {lang === loc && (
                   <span className="text-xs font-semibold text-[#b8924f]">✓</span>
                 )}
               </Link>
-            ) : (
-              <div key={loc} className={className} aria-disabled="true">
-                {inner}
-              </div>
             );
           })}
         </div>
@@ -155,7 +142,7 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
             >
               <Mail className="h-4 w-4 text-[#b8924f]" />
               <span className="text-sm font-medium text-[#1e3a2c]">
-                Support
+                {dict.conta.suporte}
               </span>
             </button>
           </div>

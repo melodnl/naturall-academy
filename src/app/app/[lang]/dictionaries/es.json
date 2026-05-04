@@ -31,7 +31,22 @@
     "ola": "Hola",
     "buscar": "Buscar recetas...",
     "todas_categorias": "Todas las categorías",
-    "ver_tudo": "Ver todo"
+    "ver_tudo": "Ver todo",
+    "tagline_full": "Tu biblioteca completa de cosméticos artesanales. Más de 600 recetas, ingredientes y paso a paso.",
+    "title_natural_recipes": "Recetas Naturales",
+    "start_now": "Empezar ahora",
+    "your_progress": "Tu progreso",
+    "tested_of_total": "{tested} de {total} recetas probadas",
+    "recommended_for_you": "Recomendadas para ti",
+    "featured": "Destacadas",
+    "match_badge": "Match",
+    "recipes_count": "{n} recetas"
+  },
+  "buscar": {
+    "result_singular": "resultado",
+    "result_plural": "resultados",
+    "for_query": "para",
+    "none_found": "No se encontraron recetas."
   },
   "receita": {
     "ingredientes": "Ingredientes",
@@ -46,7 +61,10 @@
     "dificuldade_facil": "Fácil",
     "dificuldade_medio": "Medio",
     "dificuldade_dificil": "Difícil",
-    "minutos": "min"
+    "minutos": "min",
+    "rendimento": "Rendimiento",
+    "como_usar": "Cómo usar",
+    "avisos": "Advertencias"
   },
   "categorias": {
     "facial": "Facial",
@@ -54,7 +72,8 @@
     "cabelo": "Cabello",
     "maos_pes": "Manos y Pies",
     "labios": "Labios",
-    "outros": "Otros"
+    "outros": "Otros",
+    "ver_todas": "Ver todas las {n} recetas de {cat} →"
   },
   "favoritas": {
     "titulo": "Tus favoritas",
@@ -74,7 +93,14 @@
     "nova_senha": "Nueva contraseña (mín. 8 caracteres)",
     "confirmar_senha": "Confirmar contraseña",
     "salvar": "Guardar",
-    "cancelar": "Cancelar"
+    "cancelar": "Cancelar",
+    "testadas": "Probadas",
+    "minhas_receitas": "Mis recetas",
+    "personalizar": "Personalizar",
+    "vazio_testadas_pre": "Aún no has probado ninguna receta. Abre una y toca",
+    "fiz_essa_receita": "Hice esta receta",
+    "em_breve": "pronto",
+    "suporte": "Soporte"
   },
   "trocar_idioma": "Idioma"
 }

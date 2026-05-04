@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Search } from "lucide-react";
 import { getDictionary, hasLocale } from "../../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
@@ -24,7 +24,6 @@ export default async function BuscarPage({
 }: PageProps<"/app/[lang]/buscar">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  if (lang !== "en") redirect("/app/en/buscar");
   const dict = await getDictionary(lang);
   const sp = await searchParams;
   const q = (typeof sp.q === "string" ? sp.q : "").trim();
@@ -78,13 +77,13 @@ export default async function BuscarPage({
       </div>
 
       <div className="mb-3 text-xs text-[#6b6b6b]">
-        {results.length} {results.length === 1 ? "result" : "results"}
-        {q && <span> for &quot;{q}&quot;</span>}
+        {results.length} {results.length === 1 ? dict.buscar.result_singular : dict.buscar.result_plural}
+        {q && <span> {dict.buscar.for_query} &quot;{q}&quot;</span>}
       </div>
 
       {results.length === 0 ? (
         <p className="rounded-2xl bg-white p-6 text-center text-sm text-[#6b6b6b]">
-          No recipes found.
+          {dict.buscar.none_found}
         </p>
       ) : (
         <div className="space-y-2">

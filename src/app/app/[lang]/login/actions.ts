@@ -126,5 +126,5 @@ export async function signInWithGoogleAction(formData: FormData) {
 export async function signOutAction() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
-  redirect("/app/en/login");
+  redirect("/app/pt/login");
 }

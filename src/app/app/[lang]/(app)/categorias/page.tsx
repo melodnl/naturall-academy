@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../../dictionaries";
 import { CATEGORY_META, emojiForRecipe } from "@/lib/category-meta";
 import {
@@ -13,7 +13,6 @@ export default async function CategoriasPage({
 }: PageProps<"/app/[lang]/categorias">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  if (lang !== "en") redirect("/app/en/categorias");
   const dict = await getDictionary(lang);
 
   const categoriasOrdem: CategorySlug[] = [
@@ -56,7 +55,7 @@ export default async function CategoriasPage({
                     {dict.categorias[cat]}
                   </div>
                   <div className="text-xs text-[#f0ead6]/70">
-                    {counts[cat]} recipes
+                    {dict.home.recipes_count.replace("{n}", String(counts[cat]))}
                   </div>
                 </div>
               </div>
@@ -87,7 +86,9 @@ export default async function CategoriasPage({
                       href={`/app/${lang}/buscar?cat=${cat}`}
                       className="block rounded-xl border border-[#1e3a2c]/15 bg-white/50 p-3 text-center text-xs font-medium text-[#1e3a2c]"
                     >
-                      View all {counts[cat]} {dict.categorias[cat].toLowerCase()} recipes →
+                      {dict.categorias.ver_todas
+                        .replace("{n}", String(counts[cat]))
+                        .replace("{cat}", dict.categorias[cat].toLowerCase())}
                     </Link>
                   )}
                 </div>

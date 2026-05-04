@@ -2,10 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 const SUPPORTED_LOCALES = ["pt", "es", "en"] as const;
-// EN-only enquanto traduções PT/ES não estão prontas. As pages individuais
-// redirecionam pt|es → en. O default aqui já manda direto pra EN pra evitar
-// um redirect extra.
-const DEFAULT_LOCALE = "en";
+const DEFAULT_LOCALE = "pt";
 
 function detectLocale(request: NextRequest): string {
   const cookie = request.cookies.get("locale")?.value;

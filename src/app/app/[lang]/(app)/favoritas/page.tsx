@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Heart } from "lucide-react";
 import { getDictionary, hasLocale } from "../../dictionaries";
 
@@ -8,7 +8,6 @@ export default async function FavoritasPage({
 }: PageProps<"/app/[lang]/favoritas">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  if (lang !== "en") redirect("/app/en/favoritas");
   const dict = await getDictionary(lang);
 
   // TODO: ler favoritos do banco quando auth real estiver ligado

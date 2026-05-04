@@ -31,7 +31,22 @@
     "ola": "Hi",
     "buscar": "Search recipes...",
     "todas_categorias": "All categories",
-    "ver_tudo": "See all"
+    "ver_tudo": "See all",
+    "tagline_full": "Your complete library of artisan cosmetics. 600+ recipes, ingredients and step-by-step.",
+    "title_natural_recipes": "Natural Recipes",
+    "start_now": "Start now",
+    "your_progress": "Your progress",
+    "tested_of_total": "{tested} of {total} recipes tried",
+    "recommended_for_you": "Recommended for you",
+    "featured": "Featured",
+    "match_badge": "Match",
+    "recipes_count": "{n} recipes"
+  },
+  "buscar": {
+    "result_singular": "result",
+    "result_plural": "results",
+    "for_query": "for",
+    "none_found": "No recipes found."
   },
   "receita": {
     "ingredientes": "Ingredients",
@@ -46,7 +61,10 @@
     "dificuldade_facil": "Easy",
     "dificuldade_medio": "Medium",
     "dificuldade_dificil": "Hard",
-    "minutos": "min"
+    "minutos": "min",
+    "rendimento": "Yield",
+    "como_usar": "How to use",
+    "avisos": "Warnings"
   },
   "categorias": {
     "facial": "Facial",
@@ -54,7 +72,8 @@
     "cabelo": "Hair",
     "maos_pes": "Hands & Feet",
     "labios": "Lips",
-    "outros": "Other"
+    "outros": "Other",
+    "ver_todas": "View all {n} {cat} recipes →"
   },
   "favoritas": {
     "titulo": "Your favorites",
@@ -74,7 +93,14 @@
     "nova_senha": "New password (min 8 chars)",
     "confirmar_senha": "Confirm password",
     "salvar": "Save",
-    "cancelar": "Cancel"
+    "cancelar": "Cancel",
+    "testadas": "Tried",
+    "minhas_receitas": "My recipes",
+    "personalizar": "Personalize",
+    "vazio_testadas_pre": "You haven't tried any recipes yet. Open one and tap",
+    "fiz_essa_receita": "I made this recipe",
+    "em_breve": "soon",
+    "suporte": "Support"
   },
   "trocar_idioma": "Language"
 }
