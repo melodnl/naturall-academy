@@ -34,10 +34,20 @@ async function ensureSubscriber(email: string) {
   const admin = createSupabaseAdminClient();
   const { data } = await admin
     .from("subscribers")
-    .select("status,email")
+    .select("status,email,preferred_locale")
     .eq("email", email)
     .maybeSingle();
   return data;
+}
+
+// Reescreve /app/{xx}/... pra /app/{locale}/... mantendo o restante da rota.
+// Se a URL não bate o padrão, devolve sem mexer.
+function localizedNext(next: string, locale: "pt" | "es" | "en"): string {
+  return next.replace(/^\/app\/(pt|es|en)(?=\/|$)/, `/app/${locale}`);
+}
+
+function asLocale(v: string | null | undefined): "pt" | "es" | "en" | null {
+  return v === "pt" || v === "es" || v === "en" ? v : null;
 }
 
 export async function signInAction(
@@ -62,6 +72,9 @@ export async function signInAction(
     };
   }
 
+  const targetLocale = asLocale(subscriber.preferred_locale) ?? asLocale(lang) ?? "pt";
+  const localizedTarget = localizedNext(next, targetLocale);
+
   const supabase = await createSupabaseServerClient();
 
   // Caminho 1: usuário enviou senha → tenta login direto
@@ -77,12 +90,12 @@ export async function signInAction(
         message: "E-mail ou senha incorretos.",
       };
     }
-    redirect(next);
+    redirect(localizedTarget);
   }
 
   // Caminho 2: senha vazia → magic link
   const baseUrl = await getBaseUrl();
-  const redirectTo = `${baseUrl}/auth/callback?next=${encodeURIComponent(next)}`;
+  const redirectTo = `${baseUrl}/auth/callback?next=${encodeURIComponent(localizedTarget)}`;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,

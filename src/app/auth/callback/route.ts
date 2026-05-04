@@ -1,5 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+
+function localizedNext(next: string, locale: "pt" | "es" | "en"): string {
+  return next.replace(/^\/app\/(pt|es|en)(?=\/|$)/, `/app/${locale}`);
+}
+
+function asLocale(v: string | null | undefined): "pt" | "es" | "en" | null {
+  return v === "pt" || v === "es" || v === "en" ? v : null;
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -26,7 +35,21 @@ export async function GET(request: NextRequest) {
     const supabase = await createSupabaseServerClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      let target = next;
+      if (user?.email) {
+        const admin = createSupabaseAdminClient();
+        const { data: sub } = await admin
+          .from("subscribers")
+          .select("preferred_locale")
+          .eq("email", user.email.toLowerCase())
+          .maybeSingle();
+        const loc = asLocale(sub?.preferred_locale);
+        if (loc) target = localizedNext(next, loc);
+      }
+      return NextResponse.redirect(`${origin}${target}`);
     }
   }
 
