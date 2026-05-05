@@ -88,14 +88,26 @@ function planNameToSlug(name?: string): "basico" | "mega" | null {
   return null;
 }
 
+// Mapeia product_id Hotmart → locale. Cada produto é vendido para um idioma específico
+// (campanhas segmentadas por idioma), então o product_id é a fonte mais confiável.
+const HOTMART_PRODUCT_LOCALE: Record<number, "pt" | "es" | "en"> = {
+  7626592: "en",
+  7678320: "es",
+  7678129: "pt",
+};
+
 function detectLocale(payload: HotmartPayload): "pt" | "es" | "en" | null {
-  // 1) Idioma do checkout (Hotmart marketplace)
+  // 1) Product ID (fonte canônica — cada produto = um idioma)
+  const pid = payload.data.product?.id;
+  if (pid && HOTMART_PRODUCT_LOCALE[pid]) return HOTMART_PRODUCT_LOCALE[pid];
+
+  // 2) Idioma do checkout (Hotmart marketplace)
   const lang = payload.data.buyer?.language?.toLowerCase() ?? "";
   if (lang.startsWith("pt")) return "pt";
   if (lang.startsWith("es")) return "es";
   if (lang.startsWith("en")) return "en";
 
-  // 2) Custom field "idioma"/"language" (caso configurado no checkout)
+  // 3) Custom field "idioma"/"language" (caso configurado no checkout)
   const cf = payload.data.buyer?.custom_fields;
   const fields: Record<string, string> = {};
   if (Array.isArray(cf)) {
