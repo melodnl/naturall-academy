@@ -112,7 +112,12 @@ export default async function ContaPage({ params }: PageProps<"/app/[lang]/conta
         </h2>
         <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
           {SUPPORTED_LOCALES.map((loc, i) => {
-            const label = loc === "pt" ? "Português" : loc === "es" ? "Español" : "English";
+            const labels = {
+              pt: { pt: "Português", es: "Portugués", en: "Portuguese" },
+              es: { pt: "Espanhol", es: "Español", en: "Spanish" },
+              en: { pt: "Inglês", es: "Inglés", en: "English" },
+            } as const;
+            const label = labels[loc][lang];
             const className = `flex items-center justify-between px-4 py-3.5 transition active:bg-[#f0ead6] ${
               i > 0 ? "border-t border-[#1e3a2c]/5" : ""
             }`;

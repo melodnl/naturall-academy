@@ -9,7 +9,8 @@
     "receitas": "Recetas",
     "favoritas": "Favoritas",
     "conta": "Cuenta",
-    "sair": "Salir"
+    "sair": "Salir",
+    "voltar": "Volver"
   },
   "login": {
     "titulo": "Entrar",
@@ -39,7 +40,7 @@
     "tested_of_total": "{tested} de {total} recetas probadas",
     "recommended_for_you": "Recomendadas para ti",
     "featured": "Destacadas",
-    "match_badge": "Match",
+    "match_badge": "Coincide",
     "recipes_count": "{n} recetas"
   },
   "buscar": {

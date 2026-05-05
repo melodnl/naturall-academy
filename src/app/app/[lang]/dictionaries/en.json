@@ -9,7 +9,8 @@
     "receitas": "Recipes",
     "favoritas": "Favorites",
     "conta": "Account",
-    "sair": "Sign out"
+    "sair": "Sign out",
+    "voltar": "Back"
   },
   "login": {
     "titulo": "Sign in",

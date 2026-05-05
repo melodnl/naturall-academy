@@ -1,6 +1,11 @@
 import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Locale } from "@/app/app/[lang]/dictionaries";
+import {
+  translateCategorySub,
+  translateSkinHair,
+  translateYieldText,
+} from "@/lib/recipe-i18n";
 
 export type CategorySlug =
   | "facial"
@@ -109,8 +114,8 @@ export async function getRecipesByCategory(
       slug: r.slug,
       number: r.number,
       category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
-      category_sub: r.category_sub,
-      yield_text: r.yield_text,
+      category_sub: translateCategorySub(r.category_sub, locale),
+      yield_text: translateYieldText(r.yield_text, locale),
       shelf_life_days: r.shelf_life_days,
       title: tr?.title ?? "",
       subtitle: tr?.subtitle ?? null,
@@ -169,8 +174,8 @@ export async function getRecommendedRecipes(
       slug: r.slug,
       number: r.number,
       category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
-      category_sub: r.category_sub,
-      yield_text: r.yield_text,
+      category_sub: translateCategorySub(r.category_sub, locale),
+      yield_text: translateYieldText(r.yield_text, locale),
       shelf_life_days: r.shelf_life_days,
       title: tr?.title ?? "",
       subtitle: tr?.subtitle ?? null,
@@ -202,8 +207,8 @@ export async function getFeaturedRecipes(
       slug: r.slug,
       number: r.number,
       category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
-      category_sub: r.category_sub,
-      yield_text: r.yield_text,
+      category_sub: translateCategorySub(r.category_sub, locale),
+      yield_text: translateYieldText(r.yield_text, locale),
       shelf_life_days: r.shelf_life_days,
       title: tr?.title ?? "",
       subtitle: tr?.subtitle ?? null,
@@ -234,10 +239,10 @@ export async function getRecipeBySlug(
     slug: r.slug,
     number: r.number,
     category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
-    category_sub: r.category_sub,
-    yield_text: r.yield_text,
+    category_sub: translateCategorySub(r.category_sub, locale),
+    yield_text: translateYieldText(r.yield_text, locale),
     shelf_life_days: r.shelf_life_days,
-    skin_hair: r.skin_hair,
+    skin_hair: translateSkinHair(r.skin_hair, locale),
     title: tr?.title ?? "",
     subtitle: tr?.subtitle ?? null,
     ingredients: tr?.ingredients ?? [],
@@ -281,8 +286,8 @@ export async function searchRecipes(
       slug: r.slug,
       number: r.number,
       category_slug: CATEGORY_BY_ID[r.category_id ?? 6],
-      category_sub: r.category_sub,
-      yield_text: r.yield_text,
+      category_sub: translateCategorySub(r.category_sub, locale),
+      yield_text: translateYieldText(r.yield_text, locale),
       shelf_life_days: r.shelf_life_days,
       title: tr?.title ?? "",
       subtitle: tr?.subtitle ?? null,

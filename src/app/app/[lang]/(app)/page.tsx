@@ -47,7 +47,7 @@ export default async function AppHome({ params }: PageProps<"/app/[lang]">) {
         </div>
 
         <div className="relative flex items-center justify-between">
-          <ThemeToggle />
+          <ThemeToggle lang={lang} />
           <span className="sr-only">{dict.conta.titulo}</span>
           <span className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-widest backdrop-blur">
             {lang.toUpperCase()}

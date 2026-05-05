@@ -20,7 +20,19 @@ function getServerSnapshot() {
   return false;
 }
 
-export function ThemeToggle({ className = "" }: { className?: string }) {
+const TOGGLE_LABEL: Record<string, { light: string; dark: string }> = {
+  pt: { light: "Mudar para modo claro", dark: "Mudar para modo escuro" },
+  es: { light: "Cambiar a modo claro", dark: "Cambiar a modo oscuro" },
+  en: { light: "Switch to light mode", dark: "Switch to dark mode" },
+};
+
+export function ThemeToggle({
+  className = "",
+  lang = "pt",
+}: {
+  className?: string;
+  lang?: string;
+}) {
   const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   function toggle() {
@@ -31,11 +43,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     } catch {}
   }
 
+  const labels = TOGGLE_LABEL[lang] ?? TOGGLE_LABEL.pt;
+
   return (
     <button
       type="button"
       onClick={toggle}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={isDark ? labels.light : labels.dark}
       className={
         className ||
         "flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[#f0ead6] backdrop-blur transition active:scale-95"

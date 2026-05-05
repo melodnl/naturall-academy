@@ -30,7 +30,7 @@ export default async function ReceitaPage({
           <Link
             href={`/app/${lang}/categorias#${recipe.category_slug}`}
             className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur"
-            aria-label="back"
+            aria-label={dict.nav.voltar}
           >
             <ArrowLeft className="h-4 w-4" />
           </Link>
