@@ -2,22 +2,16 @@
 // Configurar na Lowify (Webhooks → Novo Webhook):
 //   URL: https://naturallacademy.com/api/webhook/lowify?token=<LOWIFY_WEBHOOK_TOKEN>
 //   Produto: NaturallAcademy APP
-//   Eventos: Venda Aprovada (e os demais que você for habilitando)
+//   Eventos: Venda Aprovada, Reembolso, Venda Pendente
 //
 // Lowify não oferece header de assinatura nativo, então autenticamos via
-// token na query string (mesmo modo opcional da Kiwify).
+// token na query string.
 
 import { NextResponse, type NextRequest } from "next/server";
 import crypto from "node:crypto";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
-type LowifyEvent =
-  | "sale.paid"
-  | "sale.refunded"
-  | "sale.chargeback"
-  | "sale.canceled"
-  | "subscription.canceled"
-  | "subscription.late";
+type LowifyEvent = "sale.paid" | "sale.refund" | "sale.pending";
 
 type LowifyPayload = {
   event: LowifyEvent;
@@ -25,7 +19,6 @@ type LowifyPayload = {
   timestamp?: string;
   product?: { id?: number; name?: string };
   customer?: { name?: string; email?: string; phone?: string };
-  subscription?: { next_payment?: string; plan?: { name?: string } };
 };
 
 function constantTimeEqual(a: string, b: string): boolean {
@@ -69,8 +62,7 @@ export async function POST(req: NextRequest) {
 
   const supabase = createSupabaseAdminClient();
 
-  const expiresAt = payload.subscription?.next_payment ?? null;
-  const plan = planNameToSlug(payload.subscription?.plan?.name ?? payload.product?.name);
+  const plan = planNameToSlug(payload.product?.name);
   const orderId = payload.sale_id ?? null;
 
   // Lowify só vende o produto PT (Brasil), então preferred_locale é fixo.
@@ -88,24 +80,15 @@ export async function POST(req: NextRequest) {
   switch (event) {
     case "sale.paid":
       status = "active";
-      if (expiresAt) extra.expires_at = expiresAt;
       break;
-    case "subscription.canceled":
-    case "sale.canceled":
-      status = "canceled";
-      if (expiresAt) extra.expires_at = expiresAt;
-      break;
-    case "subscription.late":
-      status = "expired";
-      break;
-    case "sale.refunded":
+    case "sale.refund":
       status = "refunded";
       extra.expires_at = new Date().toISOString();
       break;
-    case "sale.chargeback":
-      status = "chargeback";
-      extra.expires_at = new Date().toISOString();
-      break;
+    case "sale.pending":
+      // Venda pendente (ex: boleto/PIX nao pago ainda) — nao ativa acesso.
+      // Apenas confirma recebimento do evento.
+      return NextResponse.json({ ok: true, ignored: event });
     default:
       return NextResponse.json({ ok: true, ignored: event });
   }
