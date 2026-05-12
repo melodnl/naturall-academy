@@ -71,7 +71,6 @@ function pickTranslation(r: RawRecipe) {
 
 export async function getCategoryCounts(): Promise<Record<CategorySlug, number>> {
   const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("recipes").select("category_id");
   const counts: Record<CategorySlug, number> = {
     facial: 0,
     corporal: 0,
@@ -80,9 +79,18 @@ export async function getCategoryCounts(): Promise<Record<CategorySlug, number>>
     labios: 0,
     outros: 0,
   };
-  for (const r of data ?? []) {
-    const slug = CATEGORY_BY_ID[r.category_id ?? 6];
-    if (slug) counts[slug]++;
+  const results = await Promise.all(
+    (Object.keys(CATEGORY_BY_ID) as string[]).map(async (id) => {
+      const { count } = await supabase
+        .from("recipes")
+        .select("id", { count: "exact", head: true })
+        .eq("category_id", parseInt(id, 10));
+      return { id: parseInt(id, 10), count: count ?? 0 };
+    }),
+  );
+  for (const { id, count } of results) {
+    const slug = CATEGORY_BY_ID[id];
+    if (slug) counts[slug] = count;
   }
   return counts;
 }
@@ -252,22 +260,36 @@ export async function getRecipeBySlug(
   };
 }
 
+export type SearchResult = {
+  items: RecipeListItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export async function searchRecipes(
   q: string,
   locale: Locale,
   category?: CategorySlug,
-  limit = 50,
-): Promise<RecipeListItem[]> {
+  page = 1,
+  pageSize = 50,
+): Promise<SearchResult> {
   const supabase = await createSupabaseServerClient();
+  const safePage = Math.max(1, page);
+  const from = (safePage - 1) * pageSize;
+  const to = from + pageSize - 1;
+
   let query = supabase
     .from("recipes")
     .select(
       `id, slug, number, category_id, category_sub, yield_text, shelf_life_days,
        recipe_translations!inner ( title, subtitle, ingredients, steps, how_to_use, warnings )`,
+      { count: "exact" },
     )
     .eq("recipe_translations.locale", locale)
     .order("number", { ascending: true })
-    .limit(limit);
+    .range(from, to);
 
   if (q) {
     query = query.ilike("recipe_translations.title", `%${q}%`);
@@ -278,8 +300,9 @@ export async function searchRecipes(
     if (catId) query = query.eq("category_id", parseInt(catId, 10));
   }
 
-  const { data } = await query;
-  return (data ?? []).map((r) => {
+  const { data, count } = await query;
+  const total = count ?? 0;
+  const items = (data ?? []).map((r) => {
     const tr = pickTranslation(r as unknown as RawRecipe);
     return {
       id: r.id,
@@ -293,4 +316,11 @@ export async function searchRecipes(
       subtitle: tr?.subtitle ?? null,
     };
   });
+  return {
+    items,
+    total,
+    page: safePage,
+    pageSize,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
 }

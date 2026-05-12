@@ -30,7 +30,18 @@ export default async function BuscarPage({
   const catParam = typeof sp.cat === "string" ? sp.cat : "";
   const cat: CategorySlug | undefined = isCategorySlug(catParam) ? catParam : undefined;
 
-  const results = await searchRecipes(q, lang, cat, 50);
+  const pageParam = typeof sp.page === "string" ? parseInt(sp.page, 10) : 1;
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
+  const { items: results, total, totalPages } = await searchRecipes(q, lang, cat, page, 50);
+
+  const buildPageHref = (p: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (cat) params.set("cat", cat);
+    if (p > 1) params.set("page", String(p));
+    const qs = params.toString();
+    return `/app/${lang}/buscar${qs ? `?${qs}` : ""}`;
+  };
 
   return (
     <main className="px-5 pt-8">
@@ -77,7 +88,7 @@ export default async function BuscarPage({
       </div>
 
       <div className="mb-3 text-xs text-[#6b6b6b]">
-        {results.length} {results.length === 1 ? dict.buscar.result_singular : dict.buscar.result_plural}
+        {total} {total === 1 ? dict.buscar.result_singular : dict.buscar.result_plural}
         {q && <span> {dict.buscar.for_query} &quot;{q}&quot;</span>}
       </div>
 
@@ -107,6 +118,34 @@ export default async function BuscarPage({
             </Link>
           ))}
         </div>
+      )}
+
+      {totalPages > 1 && (
+        <nav className="mt-6 mb-4 flex items-center justify-between gap-3">
+          {page > 1 ? (
+            <Link
+              href={buildPageHref(page - 1)}
+              className="rounded-full bg-white px-4 py-2 text-xs font-medium text-[#1e3a2c] shadow-sm"
+            >
+              ← {dict.buscar.anterior}
+            </Link>
+          ) : (
+            <span />
+          )}
+          <span className="text-xs text-[#6b6b6b]">
+            {dict.buscar.pagina_de.replace("{n}", String(page)).replace("{total}", String(totalPages))}
+          </span>
+          {page < totalPages ? (
+            <Link
+              href={buildPageHref(page + 1)}
+              className="rounded-full bg-[#1e3a2c] px-4 py-2 text-xs font-medium text-[#f0ead6] shadow-sm"
+            >
+              {dict.buscar.proxima} →
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
       )}
     </main>
   );

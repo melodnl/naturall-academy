@@ -47,7 +47,10 @@
     "result_singular": "result",
     "result_plural": "results",
     "for_query": "for",
-    "none_found": "No recipes found."
+    "none_found": "No recipes found.",
+    "anterior": "Previous",
+    "proxima": "Next",
+    "pagina_de": "Page {n} of {total}"
   },
   "receita": {
     "ingredientes": "Ingredients",

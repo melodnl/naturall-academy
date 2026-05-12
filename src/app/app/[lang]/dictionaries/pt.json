@@ -47,7 +47,10 @@
     "result_singular": "resultado",
     "result_plural": "resultados",
     "for_query": "para",
-    "none_found": "Nenhuma receita encontrada."
+    "none_found": "Nenhuma receita encontrada.",
+    "anterior": "Anterior",
+    "proxima": "Próxima",
+    "pagina_de": "Página {n} de {total}"
   },
   "receita": {
     "ingredientes": "Ingredientes",
